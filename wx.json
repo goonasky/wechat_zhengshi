@@ -1,0 +1,27 @@
+{
+    "button": [{
+            "type": "view",
+            "name": "首页",
+            "url": "http://gonasky.free.ngrok.cc/index.html"
+        },
+        {
+            "name": "报警投诉",
+            "sub_button": [{
+                    "type": "view",
+                    "name": "报警",
+                    "url": "http://gonasky.free.ngrok.cc/trapped.html"
+                },
+                {
+                    "type": "view",
+                    "name": "投诉",
+                    "url": "http://gonasky.free.ngrok.cc/repair.html"
+                }
+            ]
+        },
+        {
+            "type": "view",
+            "name": "安全常识",
+            "url": "http://gonasky.free.ngrok.cc/changshi.html"
+        }
+    ]
+}

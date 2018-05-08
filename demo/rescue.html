@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>困人报警</title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="./node_modules/weui/dist/style/weui.min.css" />
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./iconFont/iconfont.css">
+    <link rel="stylesheet" href="./css/rescue.css">
+</head>
+
+<body>
+    <div class="weui-panel">
+        <div class="weui-panel__hd">
+            <div class="weui-media-box__map">
+                <!-- 地图盒子 -->
+                <div id="container"></div>
+            </div>
+            <div class="location">
+                <i class="iconfont ico_loc">&#xe628;</i>
+                <span class="current_loc">当前位置:</span>
+                <span>威海市体育馆</span>
+            </div>
+
+        </div>
+        <div class="weui-panel__bd">
+            <div class="far">
+                <p>救援人员已出发，请耐心等待...</p>
+                <p>预计到达时间：20分钟</p>
+                <div class="sure">
+                    确认救援人员到达
+                </div>
+            </div>
+
+        </div>
+        <div class="weui-panel__ft">
+            <div class="weui-tab">
+                <div class="weui-tab__panel">
+
+                </div>
+                <div class="weui-tabbar">
+                    <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+
+                        <p class="weui-tabbar__label">再次报警</p>
+                    </a>
+                    <a href="javascript:;" class="weui-tabbar__item">
+
+                        <p class="weui-tabbar__label call">呼叫救援人员</p>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 弹出框 -->
+    <div id="dialog1" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog content">
+            <!-- <div class="weui-dialog__hd"><strong class="weui-dialog__title">呼叫救援人员</strong></div>
+            <div class="weui-dialog__bd">呼叫0574-88220001</div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default cancle">取消</a>
+                <a href="tel:123456" class="weui-dialog__btn weui-dialog__btn_primary">呼叫</a>
+            </div> -->
+        </div>
+    </div>
+    <!-- 弹出框2 -->
+    <div id="dialog2" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">提示</strong></div>
+                <div class="weui-dialog__bd">确认到达现场成功</div>
+                <div class="weui-dialog__ft">
+                    <a href="./index.html" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="./node_modules/js-sha1/build/sha1.min.js"></script>
+    <script src="./node_modules/zepto/dist/zepto.min.js"></script>
+    <!-- <script src="./node_modules/jquery/dist/jquery.min.js"></script> -->
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=B2FBZ-VI6W6-IXYSE-MDALK-ZRSDS-ZIB4Q"></script>
+    <script type="text/javascript" src="./node_modules/art-template/lib/template-web.js"></script>
+    <script src="./js/tool.js"></script>
+    <script src="./js/getTicket.js"></script>
+    <script id="contentTemplate_rescue" type="text/html">
+
+        {{each userdata.dataList value index}}
+        <div class="weui-dialog__hd"><strong class="weui-dialog__title">呼叫救援人员</strong></div>
+        <div class="weui-dialog__bd">呼叫{{value.MtPersonMobile}}</div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default cancle">取消</a>
+            <a href="tel:{{value.MtPersonMobile}}" class="weui-dialog__btn weui-dialog__btn_primary">呼叫</a>
+        </div>
+         {{/each}}
+
+    </script>
+    <script>
+        $(function () {
+            //获取上一个页面传过来的参数（对象 有时间 故障单号 电梯编号）
+            var pramaObj = getSearchObj();
+            console.log(pramaObj);
+            $.ajax({
+                type: "POST",
+                url: http1+"GetSosPersonMobile",
+                data: {
+                    reportNo:pramaObj.reportNo
+                },
+                dataType: "json",
+                success: function (data) {
+                    data = JSON.parse(JSON.stringify(data));
+                    if (data) {
+                        var sosMobilenum = data.userdata.dataList[0].MtPersonMobile;
+                        var html = template('contentTemplate_rescue', data); // 调用template()方法将模板与数据结合进行渲染
+                        $(".content").html(html); // 将渲染结果写入div
+                    }
+
+
+                },
+                error: function (error) {
+
+                    console.log(error);
+                }
+            })
+
+            $(".call").on("click", function () {
+                $("#dialog1").show();
+            })
+            $(".content").off("click").on("click",".cancle", function () {
+                $("#dialog1").hide();
+            })
+            //点击按钮，确认救援人员到达现场
+            $(".sure").on("click", function () {
+                $.ajax({
+                    type: "POST",
+                    url: http1+"SosPersonArrive",
+                    data: {
+                        Id:pramaObj.Id
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        data = JSON.parse(JSON.stringify(data));
+                        if(data.code==1){
+                            $("#dialog2").show();
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            })
+        })
+    </script>
+
+    <!-- http://map.qq.com/api/js?v=2.exp&B2FBZ-VI6W6-IXYSE-MDALK-ZRSDS-ZIB4Q&libraries=drawing,geometry,autocomplete,convertor -->
+    <!-- <script>
+        $(function () {
+
+            
+        })
+    </script> -->
+    <script>
+        // //0.先要拿到access—token
+        // //1.需要拿到jsapi_ticket这个令牌（有这个东西才能调用JS_SDK）
+        // var access_token;
+        // //2.先根据使用appid和secret来获取access_token
+        // // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc5d68d70dd2fc1a6&secret=563f3cfd0a74e811aabf845030650b96
+        // //3.根据获取到的access_token来获取jsapi_ticket
+        // //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=8_PadwaiFql71WHx_UUnP70Qge76sre5zY9201j7MoOgSR5MajkZUHxFXebdM2IKnUdSnuwGEFVSzacdCVLDNs26i_6AJA3Cw9T3g5WR8IT7q8bLHj3XAAJ8TsxhFxGj7WiWGciaTRnXkUT-ZuRWKdAEABGU&type=jsapi
+        // //4.获取到jsapi_ticket:HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhDFflVadmxqz76oVmmHoXOWfakjvyIaDysNKKmnyd6LUw（7200s之后过期）
+
+        // //进行签名的准备工作
+        // var option = {
+        //     noncestr: "HelloWorld",
+        //     jsapi_ticket: "HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhCmJY9mP-9prdL_sbGV7maePRfnnVI_zvsXQPtztiyLAA",
+        //     timestamp: 1517144307297,
+        //     url: location.href
+        // }
+        // //3.将所有参与签名的字段进行ASCII码排序  .sort
+        // var sigList = [];
+        // //将带签名的字段以键值对的形式存入数组中
+        // for (var k in option) {
+        //     sigList.push(k.trim() + "=" + option[k]);
+        // }
+        // //给数组进行排序
+        // sigList.sort()
+        // //将数组转换成key=value&key=value这种形式的字符串
+        // var sigStr = sigList.join("&");
+        // //5.对sigStr字符串，进行sha1算法加密
+        // var signature = sha1(sigStr);
+
+
+
+        // wx.config({
+        //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        //     appId: 'wxc5d68d70dd2fc1a6', // 必填，公众号的唯一标识
+        //     timestamp: option.timestamp, // 必填，生成签名的时间戳
+        //     nonceStr: option.noncestr, // 必填，生成签名的随机串
+        //     signature: signature, // 必填，签名，签名生成算法见附录1
+        //     jsApiList: ['checkJsApi',
+        //         'onMenuShareTimeline',
+        //         'onMenuShareAppMessage',
+        //         'onMenuShareQQ',
+        //         'onMenuShareWeibo',
+        //         'onMenuShareQZone',
+        //         'hideMenuItems',
+        //         'showMenuItems',
+        //         'hideAllNonBaseMenuItem',
+        //         'showAllNonBaseMenuItem',
+        //         'translateVoice',
+        //         'startRecord',
+        //         'stopRecord',
+        //         'onVoiceRecordEnd',
+        //         'playVoice',
+        //         'onVoicePlayEnd',
+        //         'pauseVoice',
+        //         'stopVoice',
+        //         'uploadVoice',
+        //         'downloadVoice',
+        //         'chooseImage',
+        //         'previewImage',
+        //         'uploadImage',
+        //         'downloadImage',
+        //         'getNetworkType',
+        //         'openLocation',
+        //         'getLocation',
+        //         'hideOptionMenu',
+        //         'showOptionMenu',
+        //         'closeWindow',
+        //         'scanQRCode',
+        //         'chooseWXPay',
+        //         'openProductSpecificView',
+        //         'addCard',
+        //         'chooseCard',
+        //         'openCard'
+        //     ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        // });
+        wx.ready(function () {
+            //获取用户当前的位置信息
+            // var latitude;
+            // var longitude;
+            wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function (res) {
+                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    var speed = res.speed; // 速度，以米/每秒计
+                    var accuracy = res.accuracy; // 位置精度
+                    init(latitude, longitude);
+                    var data = {　　　　
+                        location: latitude + "," + longitude,
+                        /*换成自己申请的key*/
+                        　　　　　key: "B2FBZ-VI6W6-IXYSE-MDALK-ZRSDS-ZIB4Q",
+                        　　　　　get_poi: 0　　　　
+                    }
+
+                    var url = "http://apis.map.qq.com/ws/geocoder/v1/?";
+                    data.output = "jsonp";
+                    $.ajax({
+                        type: "get",
+                        dataType: 'jsonp',
+                        data: data,
+                        jsonp: "callback",
+                        jsonpCallback: "QQmap",
+                        url: url,
+                        success: function (json) {
+                            /*json对象转为文本 var aToStr=JSON.stringify(a);*/
+                            $(".location span").eq(1).text(json.result.address)
+                            console.log(json.result.address);
+
+
+                        },
+                        error: function (err) {
+                            alert("服务端错误，请刷新浏览器后重试")
+                        }
+
+
+                    })
+                }
+            });
+            var init = function (lat, lon) {
+                var center = new qq.maps.LatLng(lat, lon);
+                var map = new qq.maps.Map(document.getElementById('container'), {
+                    center: center,
+                    zoom: 13
+                });
+                //创建marker
+                var marker = new qq.maps.Marker({
+                    position: center,
+                    map: map
+                });
+
+            }
+
+
+        })
+        wx.error(function (res) {
+
+
+
+        })
+    </script>
+</body>
+
+</html>

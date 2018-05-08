@@ -1,0 +1,43 @@
+body {
+    background-color: #eee;
+}
+
+.weui-cell__ft {
+    color: red;
+}
+
+.weui-cell__bd p {
+    color: #ccc;
+    font-size: 14px;
+}
+
+.work_num p {
+    color: #000;
+}
+
+.page1 .weui-cell__bd p:nth-child(4) {
+    color: orangered;
+}
+
+.now {
+    background-color: #eaeaea;
+}
+
+[data-doing] .finish_time {
+    color: red;
+}
+.weui-media-box__map{
+    width:100%;
+    height:200px;
+    /* background-color:#f00; */
+}
+#container{
+    width:100%;
+    height:100%;
+}
+.location i{
+    color:#f00;
+}
+.current_loc{
+    color:#f00;
+}

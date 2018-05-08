@@ -1,0 +1,45 @@
+.weui-media-box__map{
+    width:100%;
+    height:200px;
+    /* background-color:#f00; */
+}
+.current_loc{
+    color:orangered;
+}
+.ico_loc{
+    color:red;
+}
+.weui_label{
+    width: 4em;
+  }
+  .weui-cells{
+      margin-top:0!important;
+  }
+  #container{
+      width:100%;
+      height:100%;
+  }
+  .far{
+      width:100%;
+      height:250px;
+      position:relative;
+      color:pink;
+  }
+  .far p{
+      text-align: center;
+  }
+  .far .sure{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background-color:orangered;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    line-height:130px;
+    color:#fff;
+    word-wrap: break-word; 
+    word-break: normal; 
+  }
+
+  

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>最新动态</title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="./node_modules/weui/dist/style/weui.min.css" />
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./iconFont/iconfont.css">
+    <link rel="stylesheet" href="./css/last_news.css">
+</head>
+
+<body>
+    <article class="weui-article">
+        <h1>96333电梯救援电话开通 救援过程详解</h1>
+        <section>
+            <h4 class="title">03月08日 19:00</h4>
+            <section>
+                <img src="./images/96333.jpg" alt="">
+            </section>
+            <section>
+                <p>
+                    今后如果你被困电梯，只要用手机拨打96333，报出电梯轿厢内的7位数地理信息编码，监控中心就会立即安排专业人员前来解救。
+                </p>
+            </section>
+            <section>
+                <p>
+                    经过一年多的紧张筹备和建设，覆盖全市5万多部电梯的西安市96333特种设备安全监控系统7月14日起正式启动运行。这标志这西安由此成为全国第四个、西北地区第一个可以对城市垂直交通体系进行动态监管的城市。 96333是怎么指挥工作的？市民一旦被困电梯，救援真的有保障吗？
+                </p>
+            </section>
+            <section>
+                <p>
+                    别着急，先来看看西安市特种设备安全运行监控中心的话务员们是如何工作的，就知道了。
+                </p>
+            </section>
+        </section>
+    </article>
+
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="./node_modules/js-sha1/build/sha1.min.js"></script>
+    <script type="text/javascript" src="./node_modules/art-template/lib/template-web.js"></script>
+    <script>
+        //0.先要拿到access—token
+        //1.需要拿到jsapi_ticket这个令牌（有这个东西才能调用JS_SDK）
+        var access_token;
+        //2.先根据使用appid和secret来获取access_token
+        // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc5d68d70dd2fc1a6&secret=563f3cfd0a74e811aabf845030650b96
+        //3.根据获取到的access_token来获取jsapi_ticket
+        //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=8_aVORjNWDBs5XvsaX_PPTxSqtv6iFOeNwBFZ8fGYq1Z_7FgfKyzd4TIjQxd-IHCn3Knwg1-Tg2muafPY9UzqxYlv3q7mSlK4t3aKDlBW4h67o8szYvBfnBhHzOA2YYpoBBgVkQyGA4VrSCs0TPPRdAJAAAC&type=jsapi
+        //4.获取到jsapi_ticket:HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhDFflVadmxqz76oVmmHoXOWfakjvyIaDysNKKmnyd6LUw（7200s之后过期）
+
+        //进行签名的准备工作
+        var option = {
+            noncestr: "HelloWorld",
+            jsapi_ticket: "HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhAAa4aILGPdHuF1tK1cnIj30FZ1GnFrxx4wKgkbalZmvQ",
+            timestamp: 1517144307297,
+            url: location.href
+        }
+        //3.将所有参与签名的字段进行ASCII码排序  .sort
+        var sigList = [];
+        //将带签名的字段以键值对的形式存入数组中
+        for (var k in option) {
+            sigList.push(k.trim() + "=" + option[k]);
+        }
+        //给数组进行排序
+        sigList.sort()
+        //将数组转换成key=value&key=value这种形式的字符串
+        var sigStr = sigList.join("&");
+        //5.对sigStr字符串，进行sha1算法加密
+        var signature = sha1(sigStr);
+
+
+
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wxc5d68d70dd2fc1a6', // 必填，公众号的唯一标识
+            timestamp: option.timestamp, // 必填，生成签名的时间戳
+            nonceStr: option.noncestr, // 必填，生成签名的随机串
+            signature: signature, // 必填，签名，签名生成算法见附录1
+            jsApiList: ['checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onVoiceRecordEnd',
+                'playVoice',
+                'onVoicePlayEnd',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function () {
+
+
+        })
+        wx.error(function (res) {
+
+        })
+    </script>
+</body>
+
+</html>

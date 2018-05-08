@@ -1,0 +1,12 @@
+.weui-article h1{
+    text-align: center;
+}
+.weui-article h4{
+    text-align: center;
+    font-size:13px;
+    font-weight:400;
+    color:gray;
+}
+.weui-article section p{
+    color:gray;
+}

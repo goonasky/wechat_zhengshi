@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>投诉报修</title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="./node_modules/weui/dist/style/weui.min.css" />
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./iconFont/iconfont.css">
+    <link rel="stylesheet" href="./css/repair.css">
+
+</head>
+
+<body>
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <div class="weui-navbar__item now" data-index="1">
+                进行中
+            </div>
+            <div class="weui-navbar__item" data-index="2">
+                已完成
+            </div>
+        </div>
+        <div class="weui-tab__panel">
+            <!-- 第一页 -->
+            <div class="page1">
+                <div class="weui-panel">
+                    <div class="weui-panel__hd">
+                        <div class="weui-media-box__map">
+                            <!-- 地图盒子 -->
+                            <div id="container"></div>
+                        </div>
+                        <div class="location">
+                            <i class="iconfont ico_loc">&#xe628;</i>
+                            <span class="current_loc">当前位置:</span>
+                            <span></span>
+                        </div>
+
+                    </div>
+                    <div class="weui-panel__bd">
+                        <form class="weui-cells weui-cells_form">
+                            <!-- 电梯编号 -->
+                            <div class="weui-cell">
+                                <div class="weui-cell__hd"><label class="weui-label">电梯编号:</label></div>
+                                <div class="weui-cell__bd">
+                                    <input class="weui-input num" type="number" pattern="[0-9]*" placeholder="请输入电梯编号" name="reportNo" value="" />
+                                </div>
+                            </div>
+                            <!-- 报警人姓名 -->
+                            <div class="weui-cell">
+                                <div class="weui-cell__hd"><label class="weui-label">投诉人:</label></div>
+                                <div class="weui-cell__bd">
+                                    <input class="weui-input" type="text" placeholder="请输入投诉人姓名" name="AlertMan" value="" />
+                                </div>
+                            </div>
+                            <!-- 被困人手机号 -->
+                            <div class="weui-cell ">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">投诉电话:</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <input class="weui-input tel" type="tel" placeholder="请输入投诉电话" name="AlertManPhone" value="">
+                                </div>
+                            </div>
+
+                            <!-- 日期 -->
+                            <!-- <div class="weui-cell">
+                                        <div class="weui-cell__hd"><label for="" class="weui-label">日期</label></div>
+                                        <div class="weui-cell__bd">
+                                            <input class="weui-input" type="date" value="" />
+                                        </div>
+                                    </div> -->
+                            <!-- 时间 -->
+                            <!-- <div class="weui-cell">
+                                        <div class="weui-cell__hd"><label for="" class="weui-label">时间</label></div>
+                                        <div class="weui-cell__bd">
+                                            <input class="weui-input" type="datetime-local" value="" placeholder="" />
+                                        </div>
+                                    </div> -->
+
+
+                            <!-- 现场状况描述 -->
+                            <div class="weui-cell">
+                                <div class="weui-cell__hd"><label class="weui-label">详细描述:</label></div>
+                                <div class="weui-cell__bd">
+                                    <textarea class="weui-textarea" placeholder="请输入文本" rows="3" name="DetaileDescription" value=""></textarea>
+                                    <div class="weui-textarea-counter"><span>0</span>/200</div>
+                                </div>
+                            </div>
+                    </div>
+
+                </div>
+                <div class="weui-panel__ft">
+                    <div class="weui-btn-area">
+                        <a class="weui-btn weui-btn_primary submit" href="javascript:" id="showTooltips">立即投诉</a>
+                    </div>
+                </div>
+                </form>
+
+            </div>
+            <!-- 第二页 -->
+            <div style="display:none" class="page2">
+                <!-- <div class="weui-cells" data-doing="doing">
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd work_num">
+                            <p>工号单:<span>20151225123456</span></p>
+                        </div>
+                        <div class="weui-cell__ft">处理中</div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <p>电梯编号:<span>0200012</span></p>
+                            <p><i class="iconfont">&#xe63e;</i><i>威海市体育场</i></p>
+                            <p>详细描述:<span>电梯门关不上</span></p>
+                            <p class="finish_time">预计完成时间:<span>1</span>天</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-cells">
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd work_num">
+                            <p>工号单:<span>20151225123456</span></p>
+                        </div>
+                        <div class="weui-cell__ft">已处理</div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <p>电梯编号:<span>0200012</span></p>
+                            <p><i class="iconfont">&#xe63e;</i><i>威海市体育场</i></p>
+                            <p>详细描述:<span>电梯门关不上</span></p>
+                            <p>处理结果:<span>系统故障</span></p>
+                        </div>
+
+
+
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <!-- 弹出提示框 -->
+    <div id="dialog_repair" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd"><strong class="weui-dialog__title">提示</strong></div>
+            <div class="weui-dialog__bd">生成投诉工单成功!</div>
+            <div class="weui-dialog__ft">
+                <a href="./index.html" class="weui-dialog__btn weui-dialog__btn_primary sure">确定</a>
+            </div>
+        </div>
+    </div>
+    <!-- 救援信息提交失败 -->
+    <div id="dialog_repair1" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd"><strong class="weui-dialog__title">提示</strong></div>
+            <div class="weui-dialog__bd">电梯编号不存在</div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary sure1">确定</a>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="./node_modules/js-sha1/build/sha1.min.js"></script>
+    <script src="./node_modules/zepto/dist/zepto.min.js"></script>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp&key=B2FBZ-VI6W6-IXYSE-MDALK-ZRSDS-ZIB4Q"></script>
+    <script type="text/javascript" src="./node_modules/art-template/lib/template-web.js"></script>
+    <script src="./js/tool.js"></script>
+    <script src="./js/getTicket.js"></script>
+    <script id="contentTemplate_repair" type="text/html">
+        {{each userdata.dataList value index}} {{if value.Status=="进行中"}}
+        <div class="weui-cells" data-doing="doing">
+            <div class="weui-cell">
+                <div class="weui-cell__bd work_num">
+                    <p>工号单:<span>{{value.BusinessCode}}</span></p>
+                </div>
+                <div class="weui-cell__ft">处理中</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>电梯编号:<span>{{value.ReportNO}}</span></p>
+                    <p><i class="iconfont">&#xe63e;</i><i>{{value.EName}}</i></p>
+                    <p>详细描述:<span>{{value.Detail}}</span></p>
+                    <p class="finish_time">预计完成时间:<span>1</span>天</p>
+                </div>
+            </div>
+        </div>
+        {{/if}} {{/each}} {{each userdata.dataList value index}} {{if value.Status=="已处理"}}
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd work_num">
+                    <p>工号单:<span>{{value.BusinessCode}}</span></p>
+                </div>
+                <div class="weui-cell__ft">已处理</div>
+            </div>
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>电梯编号:<span>{{value.ReportNO}}</span></p>
+                    <p><i class="iconfont">&#xe63e;</i><i>{{value.EName}}</i></p>
+                    <p>详细描述:<span>电梯门关不上</span></p>
+                    <p>处理结果:<span>{{value.Detail}}</span></p>
+                </div>
+            </div>
+        </div>
+        {{/if}} {{/each}}
+    </script>
+    <script>
+        $(function () {
+            var str;
+            var num;
+            var i = 0;
+            var re = /^1\d{10}$/;
+            $(".weui-navbar .weui-navbar__item").bind("click", function () {
+                $(this).addClass("now").siblings().removeClass("now");
+                console.log($(this).attr("data-index"));
+                if ($(this).attr("data-index") == 1) {
+                    $(".page1").show().siblings().hide();
+                } else {
+                    $(".page2").show().siblings().hide();
+                }
+            });
+            //点击投诉按钮发送ajax
+            $(".submit").on("click", function () {
+                str = $(".tel").val()
+                num = $(".num").val()
+                console.log(str);
+                console.log(num);
+                if (str.trim() == "" || num.trim() == "") {
+                    alert("手机号码和电梯编号不能为空");
+                } else {
+                    if (re.test(str)) {
+                        var dataList = $(".weui-cells_form").serialize();
+                        console.log(dataList)
+                        $.ajax({
+                            type: "POST",
+                            url: http1+"ComplaintsCommit",
+                            data: dataList,
+                            dataType: "json",
+                            success: function (data) {
+                                data = JSON.parse(JSON.stringify(data));
+                                console.log(data);
+                                if (data.code == 1) {
+                                    $("#dialog_repair").show();
+                                } else {
+                                    $("#dialog_repair1").show();
+                                    $(".sure1").on("click", function () {
+                                        $("#dialog_repair1").hide();
+                                    })
+                                }
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                        });
+                    } else {
+                        alert("请输入正确的手机号码")
+                    }
+                }
+
+
+            })
+            //进入页面发送ajax
+            $.ajax({
+                type: "POST",
+                url: http2 + "getSBusiness",
+                data: {
+
+                },
+                dataType: "json",
+                success: function (data) {
+                    data = JSON.parse(JSON.stringify(data));
+                    console.log(data);
+                    if (data.code == 1) {
+                        // var NameArr = [];
+                        // for (var i = 0; i < data.userdata.dataList.length; i++) {
+                        //     NameArr.push(getPlaceName("39.984154,116.307490"));
+                        //     // NameArr.push(getPlaceName(data.userdata.dataList[i].Coordinate));
+                        // }
+                        // console.log(NameArr);
+                        var html = template('contentTemplate_repair', data); // 调用template()方法将模板与数据结合进行渲染
+                        $(".page2").html(html); // 将渲染结果写入div
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+    </script>
+
+    <script>
+        // //0.先要拿到access—token
+        // //1.需要拿到jsapi_ticket这个令牌（有这个东西才能调用JS_SDK）
+        // var access_token;
+        // //2.先根据使用appid和secret来获取access_token
+        // // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc5d68d70dd2fc1a6&secret=563f3cfd0a74e811aabf845030650b96
+        // //3.根据获取到的access_token来获取jsapi_ticket
+        // //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=9_zMkNZreLFoMwV8-pjpa6bOoUNHqoAOUu-oZ_AiQGe6ibRoaV7B1eDyRY3wS0xuVrL1lM0GsZz7Ay32fjAEZ4jL2Lu6im1FPE17WtSlUlazECUa95Ws6dYfChziDXahH2iupPykpVSLsuHgv_UCWhAGANVP&type=jsapi
+        // //4.获取到jsapi_ticket:HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhCosRS4V88mqSlBXl8xzU7-SWvwj2LnHM-BP6OK2PbSWg（7200s之后过期）
+        // console.log(Date.parse(new Date()));
+        // //进行签名的准备工作
+        // var option = {
+        //     noncestr: "HelloWorld", //生成签名的随机字符串
+        //     jsapi_ticket: "HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhCmJY9mP-9prdL_sbGV7maePRfnnVI_zvsXQPtztiyLAA", //微信js接口临时票据
+        //     timestamp: Date.parse(new Date()), //当前的时间戳
+        //     url: location.href //当前网页的地址
+        // }
+        // //3.将所有参与签名的字段进行ASCII码排序  .sort
+        // var sigList = [];
+        // //将带签名的字段以键值对的形式存入数组中
+        // for (var k in option) {
+        //     sigList.push(k.trim() + "=" + option[k]);
+        // }
+        // //给数组进行排序
+        // sigList.sort()
+        // //将数组转换成key=value&key=value这种形式的字符串
+        // var sigStr = sigList.join("&");
+        // //5.对sigStr字符串，进行sha1算法加密
+        // var signature = sha1(sigStr);
+
+
+
+        // wx.config({
+        //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        //     appId: 'wxc5d68d70dd2fc1a6', // 必填，公众号的唯一标识
+        //     timestamp: option.timestamp, // 必填，生成签名的时间戳
+        //     nonceStr: option.noncestr, // 必填，生成签名的随机串
+        //     signature: signature, // 必填，签名，签名生成算法见附录1
+        //     jsApiList: ['checkJsApi',
+        //         'onMenuShareTimeline',
+        //         'onMenuShareAppMessage',
+        //         'onMenuShareQQ',
+        //         'onMenuShareWeibo',
+        //         'onMenuShareQZone',
+        //         'hideMenuItems',
+        //         'showMenuItems',
+        //         'hideAllNonBaseMenuItem',
+        //         'showAllNonBaseMenuItem',
+        //         'translateVoice',
+        //         'startRecord',
+        //         'stopRecord',
+        //         'onVoiceRecordEnd',
+        //         'playVoice',
+        //         'onVoicePlayEnd',
+        //         'pauseVoice',
+        //         'stopVoice',
+        //         'uploadVoice',
+        //         'downloadVoice',
+        //         'chooseImage',
+        //         'previewImage',
+        //         'uploadImage',
+        //         'downloadImage',
+        //         'getNetworkType',
+        //         'openLocation',
+        //         'getLocation',
+        //         'hideOptionMenu',
+        //         'showOptionMenu',
+        //         'closeWindow',
+        //         'scanQRCode',
+        //         'chooseWXPay',
+        //         'openProductSpecificView',
+        //         'addCard',
+        //         'chooseCard',
+        //         'openCard'
+        //     ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        // });
+        wx.ready(function () {
+            //获取用户当前的位置信息
+            // var latitude;
+            // var longitude;
+            wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function (res) {
+                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    var speed = res.speed; // 速度，以米/每秒计
+                    var accuracy = res.accuracy; // 位置精度
+                    init(latitude, longitude);
+                    var data = {　　　　
+                        location: latitude + "," + longitude,
+                        /*换成自己申请的key*/
+                        　　　　　key: "B2FBZ-VI6W6-IXYSE-MDALK-ZRSDS-ZIB4Q",
+                        　　　　　get_poi: 0　　　　
+                    }
+
+                    var url = "http://apis.map.qq.com/ws/geocoder/v1/?";
+                    data.output = "jsonp";
+                    $.ajax({
+                        type: "get",
+                        dataType: 'jsonp',
+                        data: data,
+                        jsonp: "callback",
+                        jsonpCallback: "QQmap",
+                        url: url,
+                        success: function (json) {
+                            /*json对象转为文本 var aToStr=JSON.stringify(a);*/
+                            $(".location span").eq(1).text(json.result.address)
+                            console.log(json.result.address);
+
+
+                        },
+                        error: function (err) {
+                            alert("服务端错误，请刷新浏览器后重试")
+                        }
+
+
+                    })
+                }
+            });
+            var init = function (lat, lon) {
+                var center = new qq.maps.LatLng(lat, lon);
+                var map = new qq.maps.Map(document.getElementById('container'), {
+                    center: center,
+                    zoom: 13
+                });
+                //创建marker
+                var marker = new qq.maps.Marker({
+                    position: center,
+                    map: map
+                });
+
+            }
+
+        })
+        wx.error(function (res) {
+
+        })
+    </script>
+</body>
+
+</html>

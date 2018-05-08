@@ -1,0 +1,30 @@
+.weui-panel__hd{
+    padding:0;
+}
+.weui-navbar__item{
+    padding:0;
+}
+.weui-panel__hd img{
+    width:100%;
+}
+.weui-navbar__item .iconfont{
+    font-size:20px;
+}
+.weui-tabbar .iconfont{
+    font-size:20px;
+}
+.weui-tabbar .baojing{
+    color:red;
+}
+.weui-tabbar .baoxiu{
+    color:orangered;
+}
+.weui-tabbar .changshi{
+    color:orange;
+}
+.weui-panel__bd .new_msg i{
+    color:orange;
+}
+.weui-panel__bd .new_msg span{
+    font-weight:700;
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>安全常识</title>
+    <!-- 引入 WeUI -->
+    <link rel="stylesheet" href="./node_modules/weui/dist/style/weui.min.css" />
+    <style>
+      h1{
+          color:orange;
+      }
+    </style>
+</head>
+
+<body>
+    <article class="weui-article">
+        <h1>电梯的正确使用方法</h1>
+        <section>
+
+            <section>
+
+                <p>
+                    1.呼叫电梯时，乘客仅需要按所去方向的呼叫按钮，请勿同时将上行和下行方向按钮都按亮，以免造成无用的轿厢停靠，降低大楼电梯的总输送效率。同时这样也是为了避免安全装置错误动作，造成乘客被困在轿厢内，影响电梯正常运行。
+                </p>
+            </section>
+            <section>
+
+                <p>
+                    2.电梯门开启时，一定不要将手放在门板上，防止门板缩回时挤伤手指，电梯门关闭时，切勿将手搭在门的边缘，以免影响关门动作甚至挤伤手指。带小孩时，应当用手拉紧或抱住小孩乘坐电梯。
+                </p>
+            </section>
+            <section>
+
+                <p>
+                    3.乘坐电梯时应与门保持一定的距离，为了安全起见，因为再电梯运行时，电梯门与井道相连，相对速度非常快，电梯门万一失灵，在门附近的乘客会相当危险。
+                </p>
+            </section>
+            <section>
+
+                <p>
+                    4.不要再电梯里蹦跳。电梯轿厢上设置了很多安全保护开关。如果在轿厢内蹦跳，轿厢就会严重倾斜，有可能导致保护开关动作，使电梯进入保护状态。这种情况一旦发生，电梯会紧急停车，造成乘梯人员被困。
+                </p>
+            </section>
+            <section>
+
+                <p>
+                    5.进门使时很多人习惯用身体挡门，虽然没有危险，但如果你按的时间太长了，电梯控制部分会认为电梯已经出了故障。有可能会报警，甚至停下来。所以比较得体的做法，就是你进去以后，按着开门按钮
+                </p>
+            </section>
+        </section>
+    </article>
+
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="./node_modules/js-sha1/build/sha1.min.js"></script>
+    <script type="text/javascript" src="./node_modules/art-template/lib/template-web.js"></script>
+    <script src="./js/getTicket.js"></script>
+    <script>
+        // //0.先要拿到access—token
+        // //1.需要拿到jsapi_ticket这个令牌（有这个东西才能调用JS_SDK）
+        // var access_token;
+        // //2.先根据使用appid和secret来获取access_token
+        // // https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc5d68d70dd2fc1a6&secret=563f3cfd0a74e811aabf845030650b96
+        // //3.根据获取到的access_token来获取jsapi_ticket
+        // //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=8_aVORjNWDBs5XvsaX_PPTxSqtv6iFOeNwBFZ8fGYq1Z_7FgfKyzd4TIjQxd-IHCn3Knwg1-Tg2muafPY9UzqxYlv3q7mSlK4t3aKDlBW4h67o8szYvBfnBhHzOA2YYpoBBgVkQyGA4VrSCs0TPPRdAJAAAC&type=jsapi
+        // //4.获取到jsapi_ticket:HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhDFflVadmxqz76oVmmHoXOWfakjvyIaDysNKKmnyd6LUw（7200s之后过期）
+
+        // //进行签名的准备工作
+        // var option = {
+        //     noncestr: "HelloWorld",
+        //     jsapi_ticket: "HoagFKDcsGMVCIY2vOjf9sBUkpJtF06TACC9PvtAyhDFflVadmxqz76oVmmHoXOWfakjvyIaDysNKKmnyd6LUw",
+        //     timestamp: 1517144307297,
+        //     url: location.href
+        // }
+        // //3.将所有参与签名的字段进行ASCII码排序  .sort
+        // var sigList = [];
+        // //将带签名的字段以键值对的形式存入数组中
+        // for (var k in option) {
+        //     sigList.push(k.trim() + "=" + option[k]);
+        // }
+        // //给数组进行排序
+        // sigList.sort()
+        // //将数组转换成key=value&key=value这种形式的字符串
+        // var sigStr = sigList.join("&");
+        // //5.对sigStr字符串，进行sha1算法加密
+        // var signature = sha1(sigStr);
+
+
+
+        // wx.config({
+        //     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        //     appId: 'wxc5d68d70dd2fc1a6', // 必填，公众号的唯一标识
+        //     timestamp: option.timestamp, // 必填，生成签名的时间戳
+        //     nonceStr: option.noncestr, // 必填，生成签名的随机串
+        //     signature: signature, // 必填，签名，签名生成算法见附录1
+        //     jsApiList: ['checkJsApi',
+        //         'onMenuShareTimeline',
+        //         'onMenuShareAppMessage',
+        //         'onMenuShareQQ',
+        //         'onMenuShareWeibo',
+        //         'onMenuShareQZone',
+        //         'hideMenuItems',
+        //         'showMenuItems',
+        //         'hideAllNonBaseMenuItem',
+        //         'showAllNonBaseMenuItem',
+        //         'translateVoice',
+        //         'startRecord',
+        //         'stopRecord',
+        //         'onVoiceRecordEnd',
+        //         'playVoice',
+        //         'onVoicePlayEnd',
+        //         'pauseVoice',
+        //         'stopVoice',
+        //         'uploadVoice',
+        //         'downloadVoice',
+        //         'chooseImage',
+        //         'previewImage',
+        //         'uploadImage',
+        //         'downloadImage',
+        //         'getNetworkType',
+        //         'openLocation',
+        //         'getLocation',
+        //         'hideOptionMenu',
+        //         'showOptionMenu',
+        //         'closeWindow',
+        //         'scanQRCode',
+        //         'chooseWXPay',
+        //         'openProductSpecificView',
+        //         'addCard',
+        //         'chooseCard',
+        //         'openCard'
+        //     ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        // });
+        wx.ready(function () {
+            document.getElementById("btn").onclick = function () {
+
+            }
+
+        })
+        wx.error(function (res) {
+
+        })
+    </script>
+</body>
+
+</html>
