@@ -1,6 +1,7 @@
 //ajax请求的地址
 var http1="http://192.168.0.162:8053/qt/API_New/MobileApiNew.asmx/";
 var http2="http://192.168.0.75:8099/qt/API_New/MobileApiNew.asmx/";
+var http3="http://60.212.191.179/qt/API_New/MobileApiNew.asmx/"
 //获取地址栏拼接参数方法
 function getSearchObj() {
     //获取地址栏参数,封装成一个对象  {name:"zs", age:18, desc:"呵呵呵"}

@@ -106,7 +106,7 @@
             console.log(pramaObj);
             $.ajax({
                 type: "POST",
-                url: http1+"GetSosPersonMobile",
+                url: http3+"GetSosPersonMobile",
                 data: {
                     reportNo:pramaObj.reportNo
                 },
@@ -137,7 +137,7 @@
             $(".sure").on("click", function () {
                 $.ajax({
                     type: "POST",
-                    url: http1+"SosPersonArrive",
+                    url: http3+"SosPersonArrive",
                     data: {
                         Id:pramaObj.Id
                     },
